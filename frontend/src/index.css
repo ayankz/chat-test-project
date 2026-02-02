@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+body {
+    height: 100vh;
+}
+
+.screen {
+    height: 100vh;
+    background:#072f6b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 90px;
+    width: 100%;
+    @media(max-width:769px) {
+        padding: 40px;
+    }
+}
+.icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+.icon img{
+    width: 24px;
+    height: 24px;
+}
+

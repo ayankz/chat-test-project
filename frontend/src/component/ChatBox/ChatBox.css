@@ -1,0 +1,78 @@
+.chat-box{
+    border:3px solid #143e82;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:12px;
+    border-radius: 16px;
+    height: auto;
+    background: transparent;
+    backdrop-filter: blur(12px);
+    @media(max-width:769px) {
+        padding:6px;
+    }
+}
+.form{
+    display: flex;
+    width: 100%;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+}
+.form img{
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    @media(max-width:769px) {
+        width: 20px;
+        height: 20px;
+    }
+}
+.form .input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    outline: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    @media(max-width:769px) {
+        font-size: 12px;
+        max-width: 200px;
+    }
+}
+.form textarea:focus{
+    color: rgba(255, 255, 255, 0.6);
+}
+.form button{
+    background: transparent;
+    border: none;
+}
+.mic-ring {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    animation: pulse 1s infinite ease-in-out;
+    z-index: 1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+}
