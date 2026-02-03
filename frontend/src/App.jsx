@@ -1,29 +1,27 @@
 import "./index.css";
 
-import ChatBox from "./component/ChatBox/ChatBox.jsx";
-import {useState} from "react";
+import { useCallback } from "react";
+import ChatBox from "./components/ChatBox/ChatBox.jsx";
 import { useChatSocket } from "./hooks/useChatSocket";
-import ChatMessages from "./component/ChatMessages/ChatMessages.jsx";
-import MainPage from "./component/MainPage/MainPage.jsx";
+import ChatMessages from "./components/ChatMessages/ChatMessages.jsx";
+import MainPage from "./components/MainPage/MainPage.jsx";
 
 export default function App() {
-    const { messages, sendMessage, isLoading } = useChatSocket();
-    const [hasSentMessage, setHasSentMessage] = useState(false);
+    const { messages, sendMessage, isLoading, connectionStatus, error } = useChatSocket();
 
-    const handleSendMessage = (message) => {
-        if (!hasSentMessage) setHasSentMessage(true);
-        console.log('Message sent:', message);
+    const handleSendMessage = useCallback((message) => {
         sendMessage(message);
-    };
+    }, [sendMessage]);
+
     return (
         <div className="screen">
-            {!hasSentMessage && (
+            {messages.length === 0 && (
                 <MainPage/>
             )}
             {messages.length > 0 && (
-                <ChatMessages messages={messages} />
+                <ChatMessages messages={messages} isLoading={isLoading} />
             )}
-            <ChatBox onSendMessage={handleSendMessage}/>
+            <ChatBox onSendMessage={handleSendMessage} isLoading={isLoading} connectionStatus={connectionStatus} error={error} />
         </div>
     );
 }

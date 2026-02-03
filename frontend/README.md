@@ -1,16 +1,95 @@
-# React + Vite
+# Chat Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Фронтенд для чат-приложения с поддержкой голосового ввода и стриминга ответов через WebSocket.
 
-Currently, two official plugins are available:
+## Что внутри
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + Vite
+- WebSocket для real-time коммуникации
+- Голосовой ввод через Speech Recognition API
+- Автоматический реконнект при разрыве соединения
 
-## React Compiler
+## Установка
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+```
 
-## Expanding the ESLint configuration
+Создай `.env` файл:
+```bash
+cp .env.example .env
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+В `.env` пропиши:
+```
+VITE_WS_URL=ws://localhost:3001
+VITE_API_URL=http://localhost:3000
+```
+
+## Запуск
+
+```bash
+npm run dev
+```
+
+## Структура
+
+```
+src/
+├── components/       # UI компоненты
+│   ├── ChatBox/      # Поле ввода + кнопка микрофона
+│   ├── ChatMessages/ # Список сообщений
+│   └── MainPage/     # Главная страница
+├── hooks/
+│   ├── useChatSocket.jsx   # WebSocket логика
+│   └── useVoiceInput.jsx   # Распознавание речи
+├── services/
+│   └── websocket.js        # WebSocket сервис
+└── App.jsx
+```
+
+## Основные фичи
+
+### WebSocket
+- Стриминг ответов в реальном времени
+- Автоматический реконнект (до 5 попыток)
+- Показываются статусы подключения
+
+### Голосовой ввод
+- Работает в Chrome/Edge
+- Распознает русский язык
+- Показывает анимацию при прослушивании
+- Обработка ошибок (нет микрофона, отказ в доступе и тд)
+
+### UI
+- Адаптивная верстка
+- Loading индикаторы
+- Автоскролл к новым сообщениям
+- Typing индикатор когда бот печатает
+- Кнопки блокируются пока идет отправка
+
+## Компоненты
+
+**ChatBox** - инпут для сообщений
+- Принимает `onSendMessage`, `isLoading`, `connectionStatus`, `error`
+- Enter отправляет, Shift+Enter - новая строка
+- Кнопка микрофона если браузер поддерживает
+
+**ChatMessages** - отображение истории
+- Принимает `messages` и `isLoading`
+- Автоскролл к последнему сообщению
+- Показывает typing индикатор
+
+**MainPage** - экран приветствия (показывается до первого сообщения)
+
+## Хуки
+
+**useChatSocket** - управляет WebSocket соединением
+```js
+const { messages, sendMessage, isLoading, connectionStatus, error } = useChatSocket()
+```
+
+**useVoiceInput** - распознавание речи
+```js
+const { listening, startListening, isSupported } = useVoiceInput(onResult, onError)
+```
